@@ -5,16 +5,16 @@
         "virtualMachines_SandboxVM_name": {
             "value": null
         },
-        "virtualNetworks_Sandbox_vnet_name": {
-            "value": null
-        },
-        "networkInterfaces_sandboxvm753_name": {
+        "networkInterfaces_sandboxvm390_name": {
             "value": null
         },
         "publicIPAddresses_SandboxVM_ip_name": {
             "value": null
         },
         "networkSecurityGroups_SandboxVM_nsg_name": {
+            "value": null
+        },
+        "virtualNetworks_SandboxResourceGroup_vnet_name": {
             "value": null
         }
     }

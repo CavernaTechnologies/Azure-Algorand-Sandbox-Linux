@@ -6,12 +6,8 @@
             "defaultValue": "SandboxVM",
             "type": "String"
         },
-        "virtualNetworks_Sandbox_vnet_name": {
-            "defaultValue": "Sandbox-vnet",
-            "type": "String"
-        },
-        "networkInterfaces_sandboxvm753_name": {
-            "defaultValue": "sandboxvm753",
+        "networkInterfaces_sandboxvm390_name": {
+            "defaultValue": "sandboxvm390",
             "type": "String"
         },
         "publicIPAddresses_SandboxVM_ip_name": {
@@ -20,6 +16,10 @@
         },
         "networkSecurityGroups_SandboxVM_nsg_name": {
             "defaultValue": "SandboxVM-nsg",
+            "type": "String"
+        },
+        "virtualNetworks_SandboxResourceGroup_vnet_name": {
+            "defaultValue": "SandboxResourceGroup-vnet",
             "type": "String"
         }
     },
@@ -50,52 +50,21 @@
                         }
                     },
                     {
-                        "name": "AlgodPort",
+                        "name": "SandboxPorts",
                         "properties": {
                             "protocol": "*",
                             "sourcePortRange": "*",
-                            "destinationPortRange": "4001",
                             "sourceAddressPrefix": "*",
                             "destinationAddressPrefix": "*",
                             "access": "Allow",
                             "priority": 310,
                             "direction": "Inbound",
                             "sourcePortRanges": [],
-                            "destinationPortRanges": [],
-                            "sourceAddressPrefixes": [],
-                            "destinationAddressPrefixes": []
-                        }
-                    },
-                    {
-                        "name": "KmdPort",
-                        "properties": {
-                            "protocol": "*",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "4002",
-                            "sourceAddressPrefix": "*",
-                            "destinationAddressPrefix": "*",
-                            "access": "Allow",
-                            "priority": 320,
-                            "direction": "Inbound",
-                            "sourcePortRanges": [],
-                            "destinationPortRanges": [],
-                            "sourceAddressPrefixes": [],
-                            "destinationAddressPrefixes": []
-                        }
-                    },
-                    {
-                        "name": "IndexerPort",
-                        "properties": {
-                            "protocol": "TCP",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "8980",
-                            "sourceAddressPrefix": "*",
-                            "destinationAddressPrefix": "*",
-                            "access": "Allow",
-                            "priority": 330,
-                            "direction": "Inbound",
-                            "sourcePortRanges": [],
-                            "destinationPortRanges": [],
+                            "destinationPortRanges": [
+                                "4001",
+                                "4002",
+                                "8980"
+                            ],
                             "sourceAddressPrefixes": [],
                             "destinationAddressPrefixes": []
                         }
@@ -113,7 +82,7 @@
                 "tier": "Regional"
             },
             "properties": {
-                "ipAddress": "20.115.19.41",
+                "ipAddress": "52.170.75.51",
                 "publicIPAddressVersion": "IPv4",
                 "publicIPAllocationMethod": "Dynamic",
                 "idleTimeoutInMinutes": 4,
@@ -123,7 +92,7 @@
         {
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2020-11-01",
-            "name": "[parameters('virtualNetworks_Sandbox_vnet_name')]",
+            "name": "[parameters('virtualNetworks_SandboxResourceGroup_vnet_name')]",
             "location": "eastus",
             "properties": {
                 "addressSpace": {
@@ -152,7 +121,7 @@
             "name": "[parameters('virtualMachines_SandboxVM_name')]",
             "location": "eastus",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_sandboxvm753_name'))]"
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_sandboxvm390_name'))]"
             ],
             "properties": {
                 "hardwareProfile": {
@@ -167,12 +136,12 @@
                     },
                     "osDisk": {
                         "osType": "Linux",
-                        "name": "[concat(parameters('virtualMachines_SandboxVM_name'), '_disk1_6bfa485a991540deaaae5c81dc034f96')]",
+                        "name": "[concat(parameters('virtualMachines_SandboxVM_name'), '_disk1_210e45112a6b422b812dbc2d3fda5b4b')]",
                         "createOption": "FromImage",
                         "caching": "ReadWrite",
                         "managedDisk": {
                             "storageAccountType": "Premium_LRS",
-                            "id": "[resourceId('Microsoft.Compute/disks', concat(parameters('virtualMachines_SandboxVM_name'), '_disk1_6bfa485a991540deaaae5c81dc034f96'))]"
+                            "id": "[resourceId('Microsoft.Compute/disks', concat(parameters('virtualMachines_SandboxVM_name'), '_disk1_210e45112a6b422b812dbc2d3fda5b4b'))]"
                         },
                         "deleteOption": "Delete",
                         "diskSizeGB": 30
@@ -181,14 +150,14 @@
                 },
                 "osProfile": {
                     "computerName": "[parameters('virtualMachines_SandboxVM_name')]",
-                    "adminUsername": "Wes",
+                    "adminUsername": "wes",
                     "linuxConfiguration": {
                         "disablePasswordAuthentication": true,
                         "ssh": {
                             "publicKeys": [
                                 {
-                                    "path": "/home/Wes/.ssh/authorized_keys",
-                                    "keyData": "YOUR KEY GOES HERE"
+                                    "path": "/home/wes/.ssh/authorized_keys",
+                                    "keyData": "<your ssh key here>"
                                 }
                             ]
                         },
@@ -205,7 +174,7 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_sandboxvm753_name'))]",
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_sandboxvm390_name'))]",
                             "properties": {
                                 "deleteOption": "Detach"
                             }
@@ -222,65 +191,24 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2020-11-01",
-            "name": "[concat(parameters('networkSecurityGroups_SandboxVM_nsg_name'), '/AlgodPort')]",
+            "name": "[concat(parameters('networkSecurityGroups_SandboxVM_nsg_name'), '/SandboxPorts')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_SandboxVM_nsg_name'))]"
             ],
             "properties": {
                 "protocol": "*",
                 "sourcePortRange": "*",
-                "destinationPortRange": "4001",
                 "sourceAddressPrefix": "*",
                 "destinationAddressPrefix": "*",
                 "access": "Allow",
                 "priority": 310,
                 "direction": "Inbound",
                 "sourcePortRanges": [],
-                "destinationPortRanges": [],
-                "sourceAddressPrefixes": [],
-                "destinationAddressPrefixes": []
-            }
-        },
-        {
-            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
-            "apiVersion": "2020-11-01",
-            "name": "[concat(parameters('networkSecurityGroups_SandboxVM_nsg_name'), '/IndexerPort')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_SandboxVM_nsg_name'))]"
-            ],
-            "properties": {
-                "protocol": "TCP",
-                "sourcePortRange": "*",
-                "destinationPortRange": "8980",
-                "sourceAddressPrefix": "*",
-                "destinationAddressPrefix": "*",
-                "access": "Allow",
-                "priority": 330,
-                "direction": "Inbound",
-                "sourcePortRanges": [],
-                "destinationPortRanges": [],
-                "sourceAddressPrefixes": [],
-                "destinationAddressPrefixes": []
-            }
-        },
-        {
-            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
-            "apiVersion": "2020-11-01",
-            "name": "[concat(parameters('networkSecurityGroups_SandboxVM_nsg_name'), '/KmdPort')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_SandboxVM_nsg_name'))]"
-            ],
-            "properties": {
-                "protocol": "*",
-                "sourcePortRange": "*",
-                "destinationPortRange": "4002",
-                "sourceAddressPrefix": "*",
-                "destinationAddressPrefix": "*",
-                "access": "Allow",
-                "priority": 320,
-                "direction": "Inbound",
-                "sourcePortRanges": [],
-                "destinationPortRanges": [],
+                "destinationPortRanges": [
+                    "4001",
+                    "4002",
+                    "8980"
+                ],
                 "sourceAddressPrefixes": [],
                 "destinationAddressPrefixes": []
             }
@@ -310,9 +238,9 @@
         {
             "type": "Microsoft.Network/virtualNetworks/subnets",
             "apiVersion": "2020-11-01",
-            "name": "[concat(parameters('virtualNetworks_Sandbox_vnet_name'), '/default')]",
+            "name": "[concat(parameters('virtualNetworks_SandboxResourceGroup_vnet_name'), '/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_Sandbox_vnet_name'))]"
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_SandboxResourceGroup_vnet_name'))]"
             ],
             "properties": {
                 "addressPrefix": "10.0.0.0/24",
@@ -324,11 +252,11 @@
         {
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2020-11-01",
-            "name": "[parameters('networkInterfaces_sandboxvm753_name')]",
+            "name": "[parameters('networkInterfaces_sandboxvm390_name')]",
             "location": "eastus",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_SandboxVM_ip_name'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_Sandbox_vnet_name'), 'default')]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_SandboxResourceGroup_vnet_name'), 'default')]",
                 "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_SandboxVM_nsg_name'))]"
             ],
             "properties": {
@@ -342,7 +270,7 @@
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_SandboxVM_ip_name'))]"
                             },
                             "subnet": {
-                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_Sandbox_vnet_name'), 'default')]"
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_SandboxResourceGroup_vnet_name'), 'default')]"
                             },
                             "primary": true,
                             "privateIPAddressVersion": "IPv4"
