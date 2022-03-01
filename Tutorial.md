@@ -23,39 +23,39 @@ Start off by logging into the Azure portal: https://portal.azure.com/
 
 If this is your first time logging in, your screen may appear slightly different but it's not an issue. Look around for a button that says **Create a resource**. This can also be accessed from the drop down menu at the top left, if needed.
 
-![mainscreen](C:\Users\ParkG\source\repos\Azure-Algorand-Sandbox\images\mainscreen.png)
+![mainscreen](https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/mainscreen.png?raw=true)
 
 As you may have expected, you will now be met with the screen for creating a resource. There are many standard options to choose from, but we will be creating a **Ubuntu Server 20.04 LTS** resource. At the time of writing this tutorial, it is a standard recommendation Azure provides, but it can always be searched for if have trouble finding it.
 
-![createAResource](C:\Users\ParkG\source\repos\Azure-Algorand-Sandbox\images\createAResource.png)
+![createAResource](https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/createAResource.png?raw=true)
 
 Under the resource, click the “Create” button and you will be moved to another screen. We will now be setting the configurable parts of this virtual machine. Barring any UI changes, subscription name, or default auto filled fields, your screen should look very similar to this one.
 
-![createServer](C:\Users\ParkG\source\repos\Azure-Algorand-Sandbox\images\createServer.png)
+![createServer](https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/createServer.png?raw=true)
 
 Firstly, you will want to create a new resource group. Resource groups are a convenient way to organize resources in Azure. We’ll name our resource group **SandboxResourceGroup**. Do this by clicking **Create new** under resource group and entering the name.
 
-![createResourceGroup](C:\Users\ParkG\source\repos\Azure-Algorand-Sandbox\images\createResourceGroup.png)
+![createResourceGroup](https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/createResourceGroup.png?raw=true)
 
 Then click **Ok** so we can proceed with naming the virtual machine itself. We’ll be naming our virtual machine **SandboxVM** because it is both clear and concise. As I live in Philadelphia, I will be setting my virtual machine’s region to **East US**. However, it is best to set it to a region close to you for low latency.
 
 From here, we will leave the next few settings at their default and move to **Size**. This is a crucial step. Only certain virtual machines on Azure support nested virtualization and it is required for using the Algorand Sandbox. In typical Microsoft fashion, there is limited information available on which virtual machines support nested virtualization. For this tutorial, I will be listing out the virtual machines that *currently* support nested virtualization. However, here is the one and only resource indicating nested virtualization support: https://azure.microsoft.com/en-us/blog/nested-virtualization-in-azure/ should you need to access it. Here is the list of machines currently supporting nested virtualization:
 
-![vmsizes](C:\Users\ParkG\source\repos\Azure-Algorand-Sandbox\images\vmsizes.png)
+![vmsizes](https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/vmsizes.png?raw=true)
 
 We’ll be using D2s_v3 (also denoted as Standard_D2s_v3) because 8GB of RAM will come in handy with nested virtualization, however there is practically no difference between these choices. Any of these four will serve our needs flawlessly. (Hint: click **See all sizes** under the size option to view the full list)
 
 The final step in creating our virtual machine will be deciding how we’d like to define our administrator account. As indicated in the requirements, we’ll be using our personal computer’s public SSH key to authenticate. I do this by selecting **SSH public key** as the authentication type, setting **Username** to my name, **wes**, setting **SSH public key source** as **Use existing public key**, and finally copying my personal SSH public key to the provided field. Please take note of the **Username** you used because it will be used later to connect to the virtual machine (exact spelling). If you’ve followed these steps, your administrator account settings should look similar to this:
 
-![adminAccount](C:\Users\ParkG\source\repos\Azure-Algorand-Sandbox\images\adminAccount.png)
+![adminAccount](https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/adminAccount.png?raw=true)
 
 We’re now done with the initial setup of our virtual machine. For the remainder of the settings, we’ll be using all default options so there is no need to worry about them. There is plenty more that a virtual machine requires to run, but Azure does the heavy lifting for us. We are now ready to review the settings for our virtual machine. You may have noticed that Azure is warning you of an exposed SSH port (rightfully so!). However, this is a development environment so there is no need to worry. In a future tutorial, there will be guidance on protecting these resources within a virtual network through VPN access. For now though, you can go ahead and click **Review and Create** at the bottom left.
 
-![reviewAndCreate](C:\Users\ParkG\source\repos\Azure-Algorand-Sandbox\images\reviewAndCreate.png)
+![reviewAndCreate](https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/reviewAndCreate.png?raw=true)
 
 You will be greeted by a screen where you can see virtual machine pricing per hour, set some contact details, and review your virtual machine configuration options. We didn’t change any settings outside of basic configuration, so just take a quick look and make sure your settings are mostly similar to these.
 
-![basicOptions](C:\Users\ParkG\source\repos\Azure-Algorand-Sandbox\images\basicOptions.png)
+![basicOptions](https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/basicOptions.png?raw=true)
 
 On this screen, your **Subscription** will be different from mine. Your **Region** may be different if you set it to a different location close to you. Your **Size** may be different if you chose not to use the D2s_v3. Finally, your **Username** will likely be different unless your name is also wes. 
 
@@ -76,19 +76,19 @@ You’ll quickly move to a new screen where you can see the progress of your dep
 
 Once the virtual machine is finished deploying, you can go through and see the resource.
 
-![deploymentCompleted](C:\Users\ParkG\source\repos\Azure-Algorand-Sandbox\images\deploymentCompleted.png)
+![deploymentCompleted](https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/deploymentCompleted.png?raw=true)
 
 You will now arrive at the virtual machine’s overview page. There is a lot of very useful information here, but for now, we only need two things here. First, take note of your virtual machine’s public IP address. You can write this down, save it in notepad, or just remember where to find it. We will use this later to connect. Secondly, we need to access the virtual machine’s networking tab to open three ports.
 
-![finishedVM](C:\Users\ParkG\source\repos\Azure-Algorand-Sandbox\images\finishedVM.png)
+![finishedVM](https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/finishedVM.png?raw=true)
 
 In the **Networking** configuration tab, we need to add a new inbound port rule. 
 
-![virtualMachineNetwork](C:\Users\ParkG\source\repos\Azure-Algorand-Sandbox\images\virtualMachineNetwork.png)
+![virtualMachineNetwork](https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/virtualMachineNetwork.png?raw=true)
 
 You will then be met with a side window with a few options to set. For our case, we only need to edit two fields: **Destination port ranges** and **Name**. At the time of writing, the required ports for the Sandbox are **4001** for **Algod**, **4002** for **Kmd**, and **8980** for **Indexer**, but as these things have the tendency to change it can always be checked here: https://github.com/algorand/sandbox#usage. Your new inbound port rule should look similar to this. You can click **Add** if it all looks good.
 
-<img src="C:\Users\ParkG\source\repos\Azure-Algorand-Sandbox\images\addInboundRule.png" alt="addInboundRule" style="zoom:50%;" />
+<img src="https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/addInboundRule.png?raw=true" alt="addInboundPortRule" style="zoom:50%;" />
 
 Once, these security rules are added, we're finally done configuring our virtual machine! We can now connect and start getting our Sandbox Environment set up.
 
@@ -242,16 +242,16 @@ Since this is the first time launching, this process can take anywhere from 5-15
 
 So, you don’t want your **SandboxVM** anymore. Well, the tear down is quite easy. Go to the **SandboxResourceGroup**. You may see the resource group on your home screen or you may have to open the resource group menu.
 
-![homePage](C:\Users\ParkG\source\repos\Azure-Algorand-Sandbox\images\homePage.png)
+![homePage](https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/homePage.png?raw=true)
 
 If you opened your resource groups, you will now see a list of them. Choose **SandboxResourceGroup** from the list.
 
-![resourceGroups](C:\Users\ParkG\source\repos\Azure-Algorand-Sandbox\images\resourceGroups.png)
+![resourceGroups](https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/resourceGroups.png?raw=true)
 
 Now that you see the resource group, you should see a button near the top to delete the group. 
 
-![sandboxResourceGroup](C:\Users\ParkG\source\repos\Azure-Algorand-Sandbox\images\sandboxResourceGroup.png)
+![sandboxResourceGroup](https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/sandboxResourceGroup.png?raw=true)
 
 You’ll now be asked to type the name of the resource group, then you can finally delete the group and all associated resources. This process may take some time, but once it is completed you will no longer be incurring charges on your Azure subscription.
 
-![deleteGroup](C:\Users\ParkG\source\repos\Azure-Algorand-Sandbox\images\deleteGroup.png)
+![deleteGroup](https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/deleteGroup.png?raw=true)
