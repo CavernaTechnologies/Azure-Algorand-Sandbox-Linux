@@ -1,6 +1,6 @@
 # Preamble
 
-​	In this tutorial, we will be going through the steps to get you set up with an Algorand Sandbox environment. It is my belief that this is the best way to get started with Algorand development. This will give you a way to test code in a closed environment with zero potential consequences for mistakes all running in the cloud! It is also the first step in getting involved in the much broader Algorand development ecosystem. If you have never used Azure before, don't fret. It is my intention for you to leave this tutorial with a moderate understand of navigating Azure, setting up a Sandbox environment, and knowing where to go after this. Learning is a process, don't be afraid to seek help in the official Algorand developer discord if you get stuck.
+In this tutorial, we will be going through the steps to get you set up with an Algorand Sandbox environment. It is my belief that this is the best way to get started with Algorand development. This will give you a way to test code in a closed environment with zero potential consequences for mistakes all running in the cloud! It is also the first step in getting involved in the much broader Algorand development ecosystem. If you have never used Azure before, don't fret. It is my intention for you to leave this tutorial with a moderate understand of navigating Azure, setting up a Sandbox environment, and knowing where to go after this. Learning is a process, don't be afraid to seek help in the official Algorand developer discord if you get stuck.
 
 # Requirements
 
@@ -272,3 +272,7 @@ You’ll now be asked to type the name of the resource group, then you can final
 ![deleteGroup](https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox/blob/main/images/deleteGroup.png?raw=true)
 
 **Figure 4-4**: Resource group name and Delete
+
+# GitHub repository
+
+https://github.com/CavernaTechnologies/Azure-Algorand-Sandbox
